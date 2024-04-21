@@ -5,8 +5,8 @@
     <q-toolbar class="flex">
       <div class="col container">
         <!-- Top -->
-        <div class="row q-pt-xl">
-          <div :class="isDesktop ? 'col-4' : 'col'">
+        <div :class="isDesktop || rotate ? 'row q-pt-xl content' : 'row q-pt-xl'">
+          <div :class="isDesktop || rotate ? 'col-4' : 'col'">
             <img alt="Hyperhire Logo" :src="imgLogo" style="width: 187px; height: 34px;">
             <div :class="isDesktop ? 'text-weight-bolder text-color-1' : 'text-weight-bolder text-color-1 q-pt-sm'"> 우리는
               국가의 장벽을 넘어 최고의 인재를 매칭해드립니다. </div>
@@ -16,11 +16,11 @@
             </div>
           </div>
 
-          <div :class="isDesktop ? 'col-8' : ''">
+          <div :class="isDesktop || rotate ? 'col-8' : ''">
             <div class="row">
-              <div :class="isDesktop ? 'col' : 'col-6 q-pr-md q-pt-md'" v-for="(item, index) in cardContent"
+              <div :class="isDesktop || rotate ? 'col' : 'col-6 q-pr-md q-pt-md'" v-for="(item, index) in cardContent"
                 :key="index">
-                <q-card :class="isDesktop ? 'card q-pr-lg' : 'card-mobile q-pr-lg'" flat bordered>
+                <q-card :class="isDesktop || rotate ? 'card q-pr-lg' : 'card-mobile q-pr-lg'" flat bordered>
                   <q-card-section class="q-pt-sm chip-icon">
                     <q-chip square :icon="item.icon" class="chip-style" text-color="chip-icon" />
                     <div class="text-color-1 q-pt-sm">{{ item.label }}</div>
@@ -37,8 +37,8 @@
 
         <!-- Center -->
         <div class="grid grid-cols-12" style="gap: 14px;">
-          <div :class="isDesktop ? 'row q-pt-xl' : ''">
-            <div :class="isDesktop ? 'row col-md-4' : 'row col-md-6 q-pt-xl q-pl-md'" style="gap: 16px;">
+          <div :class="isDesktop || rotate ? 'row q-pt-xl' : ''">
+            <div :class="isDesktop || rotate ? 'row col-md-4' : 'row col-md-6 q-pt-xl q-pl-md'" style="gap: 16px;">
               <div class="col" style="gap:8px;">
                 <div class="text-color-1" style="font-size:12px;">상호명</div>
                 <div class="col" style="gap:4px;">
@@ -56,7 +56,7 @@
               </div>
             </div>
 
-            <div :class="isDesktop ? 'col col-md-2' : 'col col-md-2 q-pt-xl q-pl-md'" style="gap:8px;">
+            <div :class="isDesktop || rotate ? 'col col-md-2' : 'col col-md-2 q-pt-xl q-pl-md'" style="gap:8px;">
               <div class="text-color-1 " style="font-size:12px;"> 사업자등록번호 <span class="text-weight-bolder">
                   CIN</span>
               </div>
@@ -66,7 +66,7 @@
               </div>
             </div>
 
-            <div :class="isDesktop ? 'col col-md-6' : 'col col-md-6 q-pt-xl q-pl-md'" style="gap: 8px;">
+            <div :class="isDesktop || rotate ? 'col col-md-6' : 'col col-md-6 q-pt-xl q-pl-md'" style="gap: 8px;">
               <div class="text-color-1 text-weight-bolder" style="font-size: 12px;">주소 ADDRESS</div>
               <div class="col" style="gap: 4px;">
                 <div class="text-color-f" style="font-size: 13px;"> 서울특별시 강남대로
@@ -95,7 +95,7 @@
 </template>
 
 <script setup>
-import { ref } from 'vue';
+import { ref, onMounted, onUnmounted } from 'vue';
 import logo from '@/assets/logo.png'
 import { useQuasar } from 'quasar'
 
@@ -104,6 +104,28 @@ const $q = useQuasar()
 const isDesktop = ref($q.platform.is.desktop)
 
 const isMobile = ref($q.platform.is.mobile)
+
+const rotate = ref(false)
+
+// Function to check if the device is in portrait orientation
+function isPortrait() {
+  return window.matchMedia("(orientation: portrait)").matches
+}
+
+// Update isMobile when the screen is resized
+function handleResize() {
+  isMobile.value && isPortrait() ? rotate.value = false : rotate.value = true
+}
+
+// Attach resize event listener
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+// Remove event listener when component is unmounted
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 
 const imgLogo = ref(logo)
 
@@ -136,6 +158,11 @@ const cardContent = ref([
 .container {
   max-width: 1390px;
   margin: 0 auto;
+  overflow-x: auto;
+}
+
+.content {
+  width: 1390px;
 }
 
 .chip-style {

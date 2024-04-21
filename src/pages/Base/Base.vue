@@ -1,29 +1,31 @@
 <template>
   <q-page class="bg-gradient text-white page-base">
-    <div class="container">
-      <div class="row q-mx-lg">
+    <div :class="rotate ? 'container-desktop q-pl-md' : 'container q-pl-md'">
+      <div :class="isDesktop || rotate ? 'row q-mx-lg content' : 'row q-mx-lg'">
         <!-- Left Side -->
-        <div class="col-md-6 q-col-gutter-y-lg">
+        <div :class="isDesktop || rotate ? 'col-6 q-col-gutter-y-lg' : 'col-12 q-col-gutter-y-lg'">
           <q-intersection transition="slide-up" transition-duration="800" once :disable="!firstTransition">
             <div class="top-left">
-              <div :class="isDesktop ? 'text-color-8 tooltip-left' : 'tooltip-left-mobile'">
+              <div :class="isDesktop || rotate ? 'text-color-8 tooltip-left' : 'tooltip-left-mobile'">
                 풀타임, 파트타임 </div>
-              <img :src="isDesktop ? tooltipImg : tooltipImgMobile"
-                :class="isDesktop ? 'tooltip-tail-left' : 'tooltip-tail-left-mobile'" />
+              <img :src="isDesktop || rotate ? tooltipImg : tooltipImgMobile"
+                :class="isDesktop || rotate ? 'tooltip-tail-left' : 'tooltip-tail-left-mobile'" />
             </div>
           </q-intersection>
 
           <q-intersection transition="slide-up" transition-duration="500">
-            <div :class="isDesktop ? 'title-left q-pt-sm' : 'title-left-mobile q-pt-sm'"> 최고의 실력을 가진<br> 외국인 인재를 찾고
+            <div :class="isDesktop || rotate ? 'title-left q-pt-sm' : 'title-left-mobile q-pt-sm'"> 최고의 실력을 가진<br> 외국인
+              인재를 찾고
               계신가요?
             </div>
-            <div :class="isDesktop ? 'subtitle-left q-pt-sm' : 'subtitle-left-mobile q-pt-sm'"> 법률 및 인사관리 부담없이<br> 1주일
+            <div :class="isDesktop || rotate ? 'subtitle-left q-pt-sm' : 'subtitle-left-mobile q-pt-sm'"> 법률 및 인사관리
+              부담없이<br> 1주일
               이내에
               원격으로 채용해보세요.
             </div>
-            <div class="sub-subtitle-left q-pt-lg" v-show="!isMobile">개발자가 필요하신가요?</div>
+            <div class="sub-subtitle-left q-pt-lg" v-show="isDesktop || rotate">개발자가 필요하신가요?</div>
 
-            <div class="row q-py-lg" v-show="!isMobile">
+            <div class="row q-py-lg" v-show="isDesktop || rotate">
               <div class="col-md-4 q-pt-xl q-pr-lg" v-for="index in 3" :key="index">
                 <div class="column q-pt-sm items-left">
                   <div class="items-title-left">평균 월 <span class="text-weight-bolder">120</span>만원</div>
@@ -36,7 +38,7 @@
         <!-- Left Side -->
 
         <!-- Right Side -->
-        <div :class="isDesktop ? 'col-md-6 q-col-gutter-y-lg' : 'col q-col-gutter-y-lg q-pt-xl'">
+        <div :class="isDesktop || rotate ? 'col-6 q-col-gutter-y-lg' : 'col-12 q-col-gutter-y-lg q-pt-xl'">
           <div class="top-right">
             <q-intersection transition="slide-up" transition-duration="500" once>
               <div class="text-color-8 bg-white flex tooltip-right">
@@ -49,11 +51,11 @@
           <swiper-container slides-per-view="3" initial-slide="1" slides-per-group="1" navigation="true"
             :centeredSlides="true" :effect="'coverflow'" :coverflowEffect="{
               rotate: 0,
-              stretch: isDesktop ? 210 : 130,
+              stretch: isDesktop || rotate ? 210 : 130,
               depth: 100,
               modifier: 1,
-              slideShadows: isDesktop ? true : false,
-            }" :style="isDesktop ? {
+              slideShadows: isDesktop || rotate ? true : false,
+            }" :style="isDesktop || rotate ? {
               '--swiper-navigation-color': '#FFFFFF',
             } : {
               '--swiper-navigation-color': '#fff',
@@ -63,25 +65,26 @@
                 slidesPerView: 2,
                 spaceBetween: 1,
               },
-            }" :class="isMobile ? 'swiper' : ''">
+            }" :class="isMobile && !rotate ? 'swiper' : ''">
             <swiper-slide v-for="(item, index) in carousel" :key="index">
-              <q-card :class="isDesktop ? 'card text-center' : 'card-mobile text-center'" bordered>
+              <q-card :class="isDesktop || rotate ? 'card text-center' : 'card-mobile text-center'" bordered>
                 <q-card-section avatar>
-                  <q-avatar :size="isDesktop ? '100px' : '64px'">
+                  <q-avatar :size="isDesktop || rotate ? '100px' : '64px'">
                     <img :src="avatarImg">
                     <q-badge color="transparent" class="absolute-bottom-right">
-                      <img :src="country" :class="isDesktop ? 'country-carousel' : 'country-carousel-mobile'">
+                      <img :src="country" :class="isDesktop || rotate ? 'country-carousel' : 'country-carousel-mobile'">
                     </q-badge>
                   </q-avatar>
                 </q-card-section>
                 <q-card-section class="q-pt-none text-black">
-                  <div :class="isDesktop ? 'text-weight-bolder text-h6' : 'text-weight-bolder'"> {{ item.name }}
+                  <div :class="isDesktop || rotate ? 'text-weight-bolder text-h6' : 'text-weight-bolder'"> {{ item.name
+                    }}
                   </div>
                   <div class="text-primary"> {{ item.label }} <b>· 2y+</b> </div>
                 </q-card-section>
 
                 <q-card-section class="q-pt-none text-color-f">
-                  <div :class="isDesktop ? 'col q-pt-lg carousel' : 'col q-pt-lg carousel-mobile'">
+                  <div :class="isDesktop || rotate ? 'col q-pt-lg carousel' : 'col q-pt-lg carousel-mobile'">
                     <div class="row justify-center q-pb-sm" style="gap:4px;">
                       <div class="q-py-xs q-px-sm carousel-item"> 마케팅 콘텐츠 제작
                       </div>
@@ -103,20 +106,22 @@
 
       <!-- Bottom Side -->
       <!-- Desktop -->
-      <div v-if="isDesktop" class="col-md-2 q-col-gutter-y-lg q-pt-xl">
-        <swiper-container slides-per-view="5" slides-per-group="2" :autoplay="{
-          delay: 5000,
-          disableOnInteraction: false
-        }">
-          <swiper-slide v-for="(item, index) in slides" :key="index">
-            <q-chip size="18px" outline class="slide-chip" color="white">
-              <q-chip square :icon="item.icon" class="icon-chip text-white"></q-chip>
-              <div class="q-pl-sm">
-                {{ item.label }}
-              </div>
-            </q-chip>
-          </swiper-slide>
-        </swiper-container>
+      <div v-if="isDesktop || rotate" class="col-md-2 q-col-gutter-y-lg q-pt-xl q-pl-lg">
+        <div class="content">
+          <swiper-container slides-per-view="5" slides-per-group="2" :autoplay="{
+            delay: 5000,
+            disableOnInteraction: false
+          }">
+            <swiper-slide v-for="(item, index) in slides" :key="index">
+              <q-chip size="18px" outline class="slide-chip" color="white">
+                <q-chip square :icon="item.icon" class="icon-chip text-white"></q-chip>
+                <div class="q-pl-sm">
+                  {{ item.label }}
+                </div>
+              </q-chip>
+            </swiper-slide>
+          </swiper-container>
+        </div>
       </div>
       <!-- Desktop -->
 
@@ -142,7 +147,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted, onUnmounted } from "vue";
 import avatar from '@/assets/avatar.png'
 import utils from '@/utils/CommonUtils.js'
 import dollar from '@/assets/dollar.svg'
@@ -156,6 +161,28 @@ const $q = useQuasar()
 const isDesktop = ref($q.platform.is.desktop)
 
 const isMobile = ref($q.platform.is.mobile)
+
+const rotate = ref(false)
+
+// Function to check if the device is in portrait orientation
+function isPortrait() {
+  return window.matchMedia("(orientation: portrait)").matches
+}
+
+// Update isMobile when the screen is resized
+function handleResize() {
+  isMobile.value && isPortrait() ? rotate.value = false : rotate.value = true
+}
+
+// Attach resize event listener
+onMounted(() => {
+  window.addEventListener('resize', handleResize)
+})
+
+// Remove event listener when component is unmounted
+onUnmounted(() => {
+  window.removeEventListener('resize', handleResize)
+})
 
 const firstTransition = ref(false);
 
